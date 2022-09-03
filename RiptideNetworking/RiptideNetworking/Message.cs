@@ -53,6 +53,9 @@ namespace Riptide
                 }
             }
         }
+        
+        /// <summary> Whether to use pooling or not </summary?
+        public static bool UsePooling = true;
 
         /// <summary>How many messages to add to the pool for each <see cref="Server"/> or <see cref="Client"/> instance that is started.</summary>
         /// <remarks>Changes will not affect <see cref="Server"/> and <see cref="Client"/> instances which are already running until they are restarted.</remarks>
@@ -148,6 +151,13 @@ namespace Riptide
         private static Message RetrieveFromPool()
         {
             Message message;
+            
+            if (!UsePooling)
+            {
+                message = new Message(MaxSize);
+                return message;
+            }
+            
             if (pool.Count > 0)
             {
                 message = pool[0];
